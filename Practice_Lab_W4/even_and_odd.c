@@ -8,7 +8,7 @@ int* toBinary(int n, int* returnSize)
     int* out = malloc(size*sizeof(int));
     *returnSize = size;
 
-    for(int i = 0; i <= size - 1; i++)
+    for(int i = 0; i <= size -1; i++)
     {
         out[i] = n%2;
         n = n/2;
