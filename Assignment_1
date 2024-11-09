@@ -1,0 +1,115 @@
+#include "linked_list.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+void insertNode(struct Node** p_head, struct Node* position, int data) 
+{
+    if (position == NULL){
+        return;
+    }
+    if (position == *p_head){
+        struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode -> data = data;
+        newNode -> next = *p_head;
+        *p_head = newNode;
+        return;
+    }
+    struct Node* curr = *p_head;
+    //Traverse the list to find the node before the position
+    while (curr != NULL && curr -> next != position){
+        curr = curr -> next;
+    }
+    if (curr == NULL){
+        return;
+    }
+    // creat and insert a new node
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode -> data = data;
+    newNode -> next = curr -> next;
+    curr -> next = newNode;
+}
+
+void pushBack(struct Node** p_head, int data)
+{
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode -> data = data;
+    newNode -> next = NULL;
+    while ((*p_head) -> next != NULL){
+        p_head = &(*p_head) -> next;
+    }
+    (*p_head) -> next = newNode;
+}
+
+void deleteNode(struct Node** p_head, struct Node* position) 
+{
+    struct Node* curr = *p_head;
+    struct Node* prev = *p_head;
+    if (*p_head == NULL){
+        return;
+    }
+    else if (position == *p_head){
+        *p_head = curr -> next;
+        free(curr);
+        curr = NULL;
+    }
+    else{
+        while (curr != position){
+            prev = curr;
+            curr = curr -> next;
+        }
+        prev -> next = curr -> next;
+        free(curr);
+        curr = NULL;
+    }
+}
+
+int sizeOfList(struct Node* head) 
+{
+    int count = 0;
+    if (head == NULL){
+        return 0;
+    }
+    struct Node *ptr = NULL;
+    ptr = head;
+    while (ptr != NULL){
+        count ++;
+        ptr = ptr -> next;
+    }
+    return count;
+}
+
+void deleteList(struct Node **p_head)
+{
+    struct Node* temp= *p_head;
+    while (temp != NULL){
+        temp = temp -> next;
+        free(*p_head);
+        *p_head = temp;
+    }
+}
+
+// Display the linked list
+void displayList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// display the linked list to a string output
+void displayListToString(struct Node* head, char* output) {
+    sprintf(output, "%s", "");
+    struct Node* temp = head;
+    while (temp != NULL) {
+        char temp_str[100];
+        sprintf(temp_str, "%d -> ", temp->data);
+        strcat(output, temp_str);
+        temp = temp->next;
+    }
+    // concatenate NULL to the output string
+    sprintf(output, "%sNULL", output);
+}
